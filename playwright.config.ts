@@ -1,30 +1,37 @@
-import { PlaywrightTestConfig } from '@playwright/test';
+import { defineConfig, devices } from '@playwright/test';
 
-const config: PlaywrightTestConfig = {
+// https://playwright.dev/docs/test-configuration
+export default defineConfig({
   testDir: 'src/scenarios',
   timeout: 120000,
-  retries: 0,
-  use: {
-    trace: 'on',
-    channel: 'msedge',
-    locale: 'pt-BR',
-    headless: true,
-    viewport: { width: 1280, height: 720 },
-    ignoreHTTPSErrors: true,
-    screenshot: 'on',
-    video: 'off'
-  },
+  fullyParallel: true,
+  // impede que um test.only esquecido passe despercebido no CI
+  forbidOnly: !!process.env.CI,
+  retries: process.env.CI ? 2 : 0,
+  workers: process.env.CI ? 1 : undefined,
+  reporter: [
+    ['list'],
+    ['html', { outputFolder: 'artifacts/report', open: 'never' }]
+  ],
   expect: {
     timeout: 30000
   },
-  reporter: [
-    [
-      'html',
-      {
-        outputFolder: 'artifacts/report',
-        open: 'never'
+  use: {
+    baseURL: 'https://www.americanas.com.br',
+    locale: 'pt-BR',
+    headless: true,
+    trace: 'retain-on-failure',
+    screenshot: 'only-on-failure',
+    video: 'off'
+  },
+  projects: [
+    {
+      name: 'Microsoft Edge',
+      use: {
+        ...devices['Desktop Edge'],
+        channel: 'msedge',
+        viewport: { width: 1280, height: 720 }
       }
-    ]
+    }
   ]
-};
-export default config;
+});

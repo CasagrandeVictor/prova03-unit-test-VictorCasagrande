@@ -1,7 +1,7 @@
 {
   "name": "playwright-e2e",
   "version": "1.0.0",
-  "description": "E2E tests using MS Playwright",
+  "description": "Testes E2E do site Americanas com Microsoft Playwright",
   "main": "index.js",
   "author": "ugioni",
   "license": "ISC",
@@ -14,16 +14,14 @@
     "typescript": "^6.0.3"
   },
   "dependencies": {
-    "@faker-js/faker": "^9.9.0",
     "@playwright/test": "1.63.0",
-    "playwright": "1.63.0",
-    "sicolo": "^1.0.1"
+    "playwright": "1.63.0"
   },
   "scripts": {
     "clean": "rimraf ./artifacts && mkdirp ./artifacts",
     "format": "prettier --write \"**/**.[jt]s?(x)\"",
     "verify": "prettier --check \"**/**.[jt]s?(x)\"",
-    "scenario": "npx playwright test src/scenarios/NarwalContato.spec.ts --output artifacts/media --workers 1",
+    "scenario": "npx playwright test src/scenarios/AmericanasBusca.spec.ts --output artifacts/media --workers 1",
     "test": "npx playwright test --output artifacts/media --workers 4",
     "debug": "npx playwright test --output artifacts/media --debug --workers 1",
     "ui": "npx playwright test --output artifacts/media --ui --workers 1",

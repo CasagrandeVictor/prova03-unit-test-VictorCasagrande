@@ -2,6 +2,7 @@ node_modules/
 output/
 dist/
 artifacts/
+test-results/
+playwright-report/
 zerostep.config.json
 .playwright-mcp/
-playwright-report/

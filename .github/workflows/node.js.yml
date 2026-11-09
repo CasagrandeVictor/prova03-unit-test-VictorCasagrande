@@ -5,39 +5,49 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-  schedule:   
+  workflow_dispatch:
+  schedule:
     - cron: '0 12 * * *'
+
+permissions:
+  contents: read
 
 jobs:
   build:
     name: Run E2E Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
-    - uses: actions/checkout@v5.0.0
-    - name: Use Node.js 21
-      uses: actions/setup-node@v6.0.0
-      with:
-        node-version: 22
-        cache: 'npm'      
-    - run: npm install 
-    - run: npx playwright install      
-    - run: npm run actions  
-      env:
-        ZEROSTEP_TOKEN: ${{ secrets.ZEROSTEP_TOKEN }}       
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - name: Use Node.js 22
+        uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
+        with:
+          node-version: 22
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Verify code format
+        run: npm run verify
+      - name: Install Microsoft Edge
+        run: npx playwright install --with-deps msedge
+      - name: Run Playwright tests
+        run: npm run actions
+      - name: Upload Playwright report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: playwright-report
+          path: artifacts/
+          retention-days: 7
 
   sonarcloud:
     name: Run SonarCloud
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5.0.0
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
-          fetch-depth: 0  
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v6.0.0
-        with:
-          node-version: 22 
+          fetch-depth: 0
       - name: SonarCloud Scan
-        uses: SonarSource/sonarqube-scan-action@v6.0.0    
+        uses: SonarSource/sonarqube-scan-action@fd88b7d7ccbaefd23d8f36f73b59db7a3d246602 # v6.0.0
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
