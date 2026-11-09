@@ -35,7 +35,7 @@ Os artefatos (relatório, prints e traces das falhas) ficam em `./artifacts`.
 src/
 ├── scenarios/                 # casos de teste (*.spec.ts)
 └── support/
-    ├── elements/              # mapeamento dos elementos (locators) de cada tela
+    ├── elements/              # mapeamento dos elementoss (locators) de cada tela
     ├── fixtures/              # fixtures do Playwright (test.extend)
     └── pages/                 # page objects com as ações e validações
 ```
