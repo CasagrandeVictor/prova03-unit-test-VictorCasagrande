@@ -29,7 +29,7 @@ To use the AI ​​feature with ZeroStep, you must create the `zerostep.config.
 </br>
 <ul>
     <li>Scenarios: Test scenario mapping</li>
-    <li>Support: Project structure filess
+    <li>Support: Project structure files
         <ul>
             <li>Elements: Mapping the elements of each screen</li>
             <li>Fixtures: Data configuration files</li>
